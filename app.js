@@ -50,6 +50,27 @@ app.post("/register", function(req, res) {
     });
 });
 
+app.post("/login", function(req, res) {
+    const username = req.body.username;
+    const password = req.body.password;
+    
+    User.findOne({email: username})
+        .then((foundUser) => {
+            if(foundUser) {
+                if (foundUser.password === password) {
+                    res.render("secrets");
+                } else {
+                    res.send("Wrong passwords!")
+                }
+            } else {
+                res.send("User not found. Please register for an account!")
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+})
+
 app.listen(3000, function() {
     console.log("Server started on port 3000");
 })
